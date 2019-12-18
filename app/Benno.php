@@ -1,34 +1,36 @@
 <?php
 
-namespace App;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-
-class User extends Authenticatable
+class CreateUsersTable extends Migration
 {
-    use Notifiable;
-    
     /**
-     * The attributes that are mass assignable.
+     * Run the migrations.
      *
-     * @var array
+     * @return void
      */
-    protected $fillable = ['name', 'email', 'password'];
-    
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = ['password', 'remember_token'];
-    
-    /**
-     * Get all of the posts for the country.
-     */
-    public function posts()
+    public function up()
     {
-        return $this->hasMany('App\\Post');
+        Schema::create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->string('email')->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+    }
+    
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('users');
     }
 }

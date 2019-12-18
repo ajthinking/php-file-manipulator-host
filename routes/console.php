@@ -12,8 +12,16 @@ use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
 
 use App\PSRManipulator\PSRFile;
-use App\PSRManipulator\Stub; 
-//use PSRManipulator\Laravel\Stubs\Relationships;
+use App\PSRManipulator\Stub;
+
+use PHPFileManipulator as File;
+
+/*
+ *  Support the creator
+ *  While this repo is licensed with MIT I will gladely accept any spare change offerings.
+ *  pay-what-you-want [ andersjurisoo.com/pay-what-you-want/php-file-manipulator ]
+ */
+
     
 
 /*
@@ -55,6 +63,13 @@ Artisan::command('psr:method', function () {
     PSRFile::load('app/User.php')
         ->addClassMethod($classMethodStatements)
         ->save('app/Benno.php');
+});
+
+Artisan::command('psr:migration', function () {
+    //PSRFile::load('database/migrations/2014_10_12_000000_create_users_table.php')->save('app/Benno.php');
+    dd(
+        PSRFile::load('database/migrations/2014_10_12_000000_create_users_table.php')->ast()
+    );
 });
 
 /*

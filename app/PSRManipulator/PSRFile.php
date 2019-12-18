@@ -63,10 +63,30 @@ class PSRFile
         $this->ast[0]->name->parts = explode("\\",$newNamespace);
         return $this;
     }
+
+    public function use($newUseStatements = false)
+    {
+        if(!$newUseStatements)
+        {
+            $uses = collect($this->ast[0]->stmts)->filter(function($statement) {
+                return get_class($statement) == \PhpParser\Node\Stmt\Use_::class;
+            })->map(function($useStatement) {
+                return collect($useStatement->uses)->map(function($useStatement) {
+                    $base = join('\\', $useStatement->name->parts); 
+                    return $base . ($useStatement->alias ? ' as ' . $useStatement->alias : '');
+                });
+            })->flatten()->toArray();
+
+            return $uses;
+        }
+
+        //$this->ast[0]->name->parts = explode("\\",$newNamespace);
+        return $this;
+    }    
     
     public function ast()
     {
-        return $this->ast;
+        return $this->ast();
     }
 
     public function addClassMethod($classMethodStatements)
