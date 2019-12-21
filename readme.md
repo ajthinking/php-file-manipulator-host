@@ -103,3 +103,6 @@ class PSRFileTest extends TestCase
 }
 
 ```
+
+## Currently does not support
+* GroupUse: `use Package\{Alfa, Beta};`
