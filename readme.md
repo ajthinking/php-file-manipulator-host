@@ -1,8 +1,5 @@
 # PHP-FILE-MANIPULATOR
-Danger zone! Tools to manipulate PHP file on disk. 
-
-![Alt Text](https://media1.tenor.com/images/dd75ffff0321bb678871d1e452711caa/tenor.gif?itemid=15725493)
-
+> Danger zone! Tools to manipulate PHP file on disk. WIP.
 
 Get started by looking at the tests
 ```php
