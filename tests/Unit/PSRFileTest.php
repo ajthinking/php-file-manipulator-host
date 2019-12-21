@@ -20,7 +20,7 @@ class PSRFileTest extends TestCase
     }
 
     /** @test */
-    public function it_can_write_to_a_file_to_disc()
+    public function it_can_write_to_disc()
     {
         // Save a copy
         $this->userFile()->save(
