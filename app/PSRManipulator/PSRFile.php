@@ -19,14 +19,6 @@ use PhpParser\BuilderFactory;
 use PhpParser\Node\Stmt\UseUse;
 use PhpParser\PrettyPrinter;
 
-class SimpleVisitor extends NodeVisitorAbstract {
-    public function leaveNode(Node $node)
-    {
-        if($node)
-        return [$node];
-    }
-}
-
 class PSRFile
 {
     /* Create instance **********************************/
@@ -102,20 +94,15 @@ class PSRFile
         return $this;
     }
 
-    public function save($newRelativePath = false)
+    public function save($path = false)
     {
-        if($newRelativePath)
-        {
-            $this->path = base_path($newRelativePath);
-        }
+        // optionally update path
+        if($path) $this->path = $path;
 
         // write current ast to file
         $prettyPrinter = new PSR2PrettyPrinter;
-
-
-
-        $newCode = $prettyPrinter->prettyPrintFile($this->ast);
-        file_put_contents($this->path,$newCode);
+        $code = $prettyPrinter->prettyPrintFile($this->ast);
+        file_put_contents($this->path,$code);
 
         return $this;
     } 
@@ -129,18 +116,32 @@ class PSRFile
 
     private function getNamespace()
     {
-        return implode('\\', $this->ast[0]->name->parts);
+        $namespace = (new NodeFinder)->findFirstInstanceOf($this->ast, Namespace_::class);
+        return $namespace ? implode('\\', $namespace->name->parts) : null;
     }
 
     private function setNamespace($newNamespace)
     {
-        $this->ast[0]->name->parts = explode("\\", $newNamespace);
+        $namespace = (new NodeFinder)->findFirstInstanceOf($this->ast, Namespace_::class);
+        
+        if($namespace) {
+            // Modifying existing namespace
+            $namespace->name->parts = explode("\\", $newNamespace);
+        } else {
+            // Add a namespace
+            array_unshift(
+                $this->ast,
+                (new BuilderFactory)->namespace($newNamespace)->getNode()
+            );
+        }
+        
         return $this;
+        
     }    
 
     private function getUseStatements()
     {
-        return collect((new NodeFinder)->findInstanceOf($this->ast[0], Node\Stmt\Use_::class))
+        return collect((new NodeFinder)->findInstanceOf($this->ast, Node\Stmt\Use_::class))
             ->map(function($useStatement) {
                 return collect($useStatement->uses)->map(function($useStatement) {
                     $base = join('\\', $useStatement->name->parts); 
@@ -171,13 +172,20 @@ class PSRFile
 
     private function getClassName()
     {
-         return (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class)->name->name;        
+        $className = (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class);
+        return $className ? $className->name->name : null;        
     }
 
     private function setClassName($newClassName)
     {
-        return implode('\\', $this->ast[0]->name->parts);
-    }    
+        $class = (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class);
+        
+        if($class) {
+            $class->name->name = $newClassName;
+        }
+
+        return $this;
+    } 
 
     public function parse()
     {
