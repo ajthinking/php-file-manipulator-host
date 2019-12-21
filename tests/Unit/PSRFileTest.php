@@ -8,10 +8,10 @@ use App\PSRManipulator\PSRFile;
 class PSRFileTest extends TestCase
 {
     /** @test */
-    public function it_can_instanciate_from_a_sample_file()
+    public function it_can_read_from_disc()
     {
         $file = PSRFile::load(
-            $this->samplePath('User.php')
+            $this->samplePath('app/User.php')
         );
 
         $this->assertTrue(
@@ -20,26 +20,65 @@ class PSRFileTest extends TestCase
     }
 
     /** @test */
+    public function it_can_write_to_a_file_to_disc()
+    {
+        // Save a copy
+        $this->userFile()->save(
+            $this->samplePath('.output/User.php')
+        );
+
+        // Read it
+        $copy = PSRFile::load(
+            $this->samplePath('.output/User.php')
+        );
+
+        // Ensuring it is valid
+        $this->assertTrue(
+            get_class($copy) === 'App\PSRManipulator\PSRFile'
+        );
+
+        // NOTE: When pretty printing some of the array formatting may change
+        // For instance the $fillable array in Laravels default User class
+        // Compare Filesamples/User.php <---> Filesamples/.output/User.php
+        // For now expect non identical ASTs
+        $this->assertTrue(
+            json_encode($this->userFile()->ast()) != json_encode($copy->ast())
+        );
+    }    
+
+    /** @test */
     public function it_can_retrieve_namespace()
     {
+        // on a file with namespace
         $this->assertTrue(
             $this->userFile()->namespace() === 'App'
+        );
+
+        // on a file without namespace
+        $this->assertTrue(
+            $this->routesFile()->namespace() === null
         );
     }
 
     /** @test */
     public function it_can_set_namespace()
     {
-        $file = $this->userFile();
+        // on a file with namespace
         $this->assertTrue(
-            $file->namespace('New\Namespace')->namespace() === 'New\Namespace'
+            $this->userFile()->namespace('New\Namespace')->namespace() === 'New\Namespace'
         );
+
+        // on a file without namespace
+        $this->assertTrue(
+            $this->routesFile()->namespace('New\Namespace')->namespace() === 'New\Namespace'
+        );        
     }    
     
     /** @test */
     public function it_can_retrieve_use_statements()
     {
         $file = $this->userFile();
+        $file = $this->routesFile();
         $useStatements = $file->useStatements();
         $expectedUseStatements = collect([
             "Illuminate\Notifications\Notifiable",
@@ -82,17 +121,38 @@ class PSRFileTest extends TestCase
         $this->assertTrue(
             $file->className() === "User"
         );
-    }    
+    }
+    
+    /** @test */
+    public function it_can_set_class_name()
+    {
+        // on a file with a class
+        $this->assertTrue(
+            $this->userFile()->className("NewName")->className() === "NewName"
+        );
+
+        // on a file without a class
+        $this->assertTrue(
+            $this->routesFile()->className("NewName")->className() === null
+        );        
+    }     
 
     protected function samplePath($name)
     {
-        return 'tests/Unit/FileSamples/User.php';
+        return "tests/Unit/FileSamples/$name";
     }
 
     protected function userFile()
     {
         return PSRFile::load(
-            $this->samplePath('User.php')
+            $this->samplePath('app/User.php')
+        );        
+    }
+    
+    protected function routesFile()
+    {
+        return PSRFile::load(
+            $this->samplePath('routes/web.php')
         );        
     }    
 }
