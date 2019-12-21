@@ -2,10 +2,12 @@
 
 namespace App\PSRManipulator;
 
+use PhpParser\Node\Stmt\Namespace_;
 use PhpParser\Error;
 use PhpParser\NodeDumper;
 use PhpParser\ParserFactory;
 use PhpParser\Node;
+use PhpParser\NodeFinder;
 use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Use_;
@@ -13,9 +15,22 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
 use App\PSRManipulator\PSR2PrettyPrinter;
+use PhpParser\BuilderFactory;
+use PhpParser\Node\Stmt\UseUse;
+use PhpParser\PrettyPrinter;
+
+class SimpleVisitor extends NodeVisitorAbstract {
+    public function leaveNode(Node $node)
+    {
+        if($node)
+        return [$node];
+    }
+}
 
 class PSRFile
 {
+    /* Create instance **********************************/
+
     public function __construct($fullPath)
     {
         $this->path = $fullPath;
@@ -24,8 +39,6 @@ class PSRFile
         $this->ast = $this->parse();
     }
 
-    /* STATIC API *********************************/
-
     static function load($relativePath)
     {
         return new PSRFile(
@@ -33,15 +46,7 @@ class PSRFile
         );
     }
 
-    static function fromString($code)
-    {
-        // return new PSRFile(
-        //     base_path($relativePath)
-        // );
-    }
-    
-
-    /* PUBLIC API **********************************/
+    /* API **********************************/
 
     public function path()
     {
@@ -55,38 +60,24 @@ class PSRFile
 
     public function namespace($newNamespace = false)
     {
-        if(!$newNamespace)
-        {
-            return implode('\\', $this->ast[0]->name->parts);
-        }
-
-        $this->ast[0]->name->parts = explode("\\",$newNamespace);
-        return $this;
+        return $newNamespace ? $this->setNamespace($newNamespace) : $this->getNamespace();
     }
 
-    public function use($newUseStatements = false)
+    public function useStatements($newUseStatements = false)
     {
-        if(!$newUseStatements)
-        {
-            $uses = collect($this->ast[0]->stmts)->filter(function($statement) {
-                return get_class($statement) == \PhpParser\Node\Stmt\Use_::class;
-            })->map(function($useStatement) {
-                return collect($useStatement->uses)->map(function($useStatement) {
-                    $base = join('\\', $useStatement->name->parts); 
-                    return $base . ($useStatement->alias ? ' as ' . $useStatement->alias : '');
-                });
-            })->flatten()->toArray();
+        return $newUseStatements ? $this->setUseStatements($newUseStatements) : $this->getUseStatements();
+    }
 
-            return $uses;
-        }
-
-        //$this->ast[0]->name->parts = explode("\\",$newNamespace);
-        return $this;
-    }    
+    public function className($newClassName = false)
+    {
+        return $newClassName ? $this->setClassName($newClassName) : $this->getClassName();
+    }
     
-    public function ast()
+    public function classMethods()
     {
-        return $this->ast();
+        dd(
+            (new NodeFinder)->findInstanceOf($this->ast, Node\Stmt\ClassMethod::class)
+        );
     }
 
     public function addClassMethod($classMethodStatements)
@@ -127,9 +118,66 @@ class PSRFile
         file_put_contents($this->path,$newCode);
 
         return $this;
-    }    
+    } 
 
     /* PRIVATE *******************************************/
+
+    public function ast()
+    {
+        return $this->ast;
+    }   
+
+    private function getNamespace()
+    {
+        return implode('\\', $this->ast[0]->name->parts);
+    }
+
+    private function setNamespace($newNamespace)
+    {
+        $this->ast[0]->name->parts = explode("\\", $newNamespace);
+        return $this;
+    }    
+
+    private function getUseStatements()
+    {
+        return collect((new NodeFinder)->findInstanceOf($this->ast[0], Node\Stmt\Use_::class))
+            ->map(function($useStatement) {
+                return collect($useStatement->uses)->map(function($useStatement) {
+                    $base = join('\\', $useStatement->name->parts); 
+                    return $base . ($useStatement->alias ? ' as ' . $useStatement->alias : '');
+                });
+            })->flatten()->toArray();
+    }
+
+    // VALID INPUT
+    // [[name parts, bla bla]]
+
+    // STRATEGY *************************************
+    // find last occurance?
+    // replace, remove, edit, or move occurance
+    // insert occurance
+
+    // FOR NOW ONLY ADD!
+    private function setUseStatements($newUseStatement)
+    {
+        $traverser = new NodeTraverser();
+        $visitor = new UseStatementInserter($this->ast, $newUseStatement);
+        $traverser->addVisitor($visitor);
+
+        $this->ast = $traverser->traverse($this->ast);
+
+        return $this;
+    }    
+
+    private function getClassName()
+    {
+         return (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class)->name->name;        
+    }
+
+    private function setClassName($newClassName)
+    {
+        return implode('\\', $this->ast[0]->name->parts);
+    }    
 
     public function parse()
     {
@@ -144,4 +192,9 @@ class PSRFile
         return $ast;
     }
 
+    public function print()
+    {
+        $prettyPrinter = new PSR2PrettyPrinter;
+        dd($prettyPrinter->prettyPrintFile($this->ast));
+    }
 }
