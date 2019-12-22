@@ -19,7 +19,9 @@ use PhpParser\BuilderFactory;
 use PhpParser\Node\Stmt\UseUse;
 use PhpParser\PrettyPrinter;
 
-class PSRFile
+use App\PSRManipulator\PSRFileInterface;
+
+class PSRFile implements PSRFileInterface
 {
     /* Create instance **********************************/
 
@@ -83,7 +85,6 @@ class PSRFile
 
             public function enterNode(Node $node) {
                 if ($node instanceof Class_) {
-                    //array_push($node->stmts, $node->stmts[2]);
                     $node->stmts = array_merge($node->stmts, $this->classMethodStatements);
                 }
             }
@@ -203,6 +204,6 @@ class PSRFile
     public function print()
     {
         $prettyPrinter = new PSR2PrettyPrinter;
-        dd($prettyPrinter->prettyPrintFile($this->ast));
+        return $prettyPrinter->prettyPrintFile($this->ast);
     }
 }
