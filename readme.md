@@ -170,3 +170,4 @@ class PSRFileTest extends TestCase
 
 ## TODO
 [] Create a dedicated Storage disk (storage/php-file-manipulator/preview etc)
+[] Solve difference for namespaced and not namespaced files
