@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\PSRManipulator\PSRFile;
+use NamespaceTests;
 
 class PSRFileTest extends TestCase
 {
@@ -27,11 +28,11 @@ class PSRFileTest extends TestCase
         );
 
         $this->assertTrue(
-            $file->relativePath() === 'tests/Unit/FileSamples/app/User.php'
+            $file->relativePath() === 'tests/FileSamples/app/User.php'
         );
 
         $this->assertTrue(
-            $file->path() === base_path('tests/Unit/FileSamples/app/User.php')
+            $file->path() === base_path('tests/FileSamples/app/User.php')
         );        
     }    
 
@@ -70,168 +71,12 @@ class PSRFileTest extends TestCase
 
         // Load it from the preview folder
         $preview = PSRFile::load(
-            // this is long now, when using real files it will be just .preview/app/User.php
-            'storage/.preview/tests/Unit/FileSamples/app/User.php'
+            'storage/.preview/tests/FileSamples/app/User.php'
         );
 
         // It is valid
         $this->assertTrue(
             get_class($preview) === 'App\PSRManipulator\PSRFile'
         );        
-    }
-
-    /** @test */
-    public function it_can_retrieve_namespace()
-    {
-        // on a file with namespace
-        $this->assertTrue(
-            $this->userFile()->namespace() === 'App'
-        );
-
-        // on a file without namespace
-        $this->assertTrue(
-            $this->routesFile()->namespace() === null
-        );
-    }
-
-    /** @test */
-    public function it_can_set_namespace()
-    {
-        // on a file with namespace
-        $this->assertTrue(
-            $this->userFile()->namespace('New\Namespace')->namespace() === 'New\Namespace'
-        );
-
-        // on a file without namespace
-        $this->assertTrue(
-            $this->routesFile()->namespace('New\Namespace')->namespace() === 'New\Namespace'
-        );        
-    }    
-    
-    /** @test */
-    public function it_can_retrieve_use_statements()
-    {
-        // A file with use statements
-        $file = $this->userFile();
-        $useStatements = $file->useStatements();
-        $expectedUseStatements = collect([
-            "Illuminate\Notifications\Notifiable",
-            "Illuminate\Contracts\Auth\MustVerifyEmail",
-            "Illuminate\Foundation\Auth\User as Authenticatable",
-        ]);
-
-        $expectedUseStatements->each(function($expectedUseStatement) use($useStatements){
-            $this->assertTrue(
-                collect($useStatements)->contains($expectedUseStatement)
-            );
-        });
-
-        // A file without use statements
-        $file = $this->routesFile();
-        $useStatements = $file->useStatements();
-
-        $this->assertTrue(
-            collect($useStatements)->count() === 0
-        );
-
-    }
-    
-    /** @test */
-    public function it_can_add_use_statements_in_a_namespace()
-    {
-        // on a file with use statements        
-        $file = $this->userFile();
-        $useStatements = $file->addUseStatements(['Add\This'])->useStatements();
-        $expectedUseStatements = collect([
-            "Illuminate\Notifications\Notifiable",
-            "Illuminate\Contracts\Auth\MustVerifyEmail",
-            "Illuminate\Foundation\Auth\User as Authenticatable",            
-            "Add\This",            
-        ]);
-
-        $expectedUseStatements->each(function($expectedUseStatement) use($useStatements){
-            $this->assertTrue(
-                collect($useStatements)->contains($expectedUseStatement)
-            );
-        });        
-    }
-
-    /** @wip-test */
-    public function it_can_add_use_statements_when_not_in_a_namespace()
-    {        
-        $file = $this->routesFile();
-        $useStatements = $file->addUseStatements(['Add\This'])->useStatements();
-        $expectedUseStatements = collect([            
-            "Add\This",            
-        ]);
-        
-        $expectedUseStatements->each(function($expectedUseStatement) use($useStatements){
-            $this->assertTrue(
-                collect($useStatements)->contains($expectedUseStatement)
-            );
-        });
-    }
-
-
-    /** @wip-test */
-    public function it_can_overwrite_use_statements()
-    {
-        $file = $this->userFile();
-
-        $useStatements = $file->useStatements(['Only\This'])->useStatements();
-        $expectedUseStatements = collect([
-            "Only\This",
-        ]);
-
-        $this->assertTrue(
-            collect($useStatements)->count() == 1
-        );
-
-        $this->assertTrue(
-            $useStatements[0] == 'Only\This'
-        );        
-    }
-
-    /** @test */
-    public function it_can_retrieve_class_name()
-    {
-        $file = $this->userFile();
-
-        $this->assertTrue(
-            $file->className() === "User"
-        );
-    }
-    
-    /** @test */
-    public function it_can_set_class_name()
-    {
-        // on a file with a class
-        $this->assertTrue(
-            $this->userFile()->className("NewName")->className() === "NewName"
-        );
-
-        // on a file without a class
-        $this->assertTrue(
-            $this->routesFile()->className("NewName")->className() === null
-        );        
-    }
-
-    protected function samplePath($name)
-    {
-        return "tests/Unit/FileSamples/$name";
-    }
-
-    protected function userFile()
-    {
-        return PSRFile::load(
-            $this->samplePath('app/User.php')
-        );        
-    }
-    
-    protected function routesFile()
-    {
-        return PSRFile::load(
-            $this->samplePath('routes/web.php')
-        );        
-    }    
+    }   
 }
