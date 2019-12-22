@@ -170,19 +170,24 @@ class PSRFile implements PSRFileInterface
             })->flatten()->toArray();
     }
 
-    // VALID INPUT
-    // [[name parts, bla bla]]
+    public function addUseStatements($newUseStatements)
+    {
+        $namespace = (new NodeFinder)->findFirstInstanceOf($this->ast, Namespace_::class);
+        $traverser = new NodeTraverser();
+        $visitor = new UseStatementInserter(
+            $namespace ? $this->ast[0]->stmts : $this->ast,
+            $newUseStatements);
+        $traverser->addVisitor($visitor);
 
-    // STRATEGY *************************************
-    // find last occurance?
-    // replace, remove, edit, or move occurance
-    // insert occurance
+        $this->ast = $traverser->traverse($this->ast);
 
-    // FOR NOW ONLY ADD!
-    private function setUseStatements($newUseStatement)
+        return $this;
+    }
+    
+    private function setUseStatements($newUseStatements)
     {
         $traverser = new NodeTraverser();
-        $visitor = new UseStatementInserter($this->ast, $newUseStatement);
+        $visitor = new UseStatementInserter($this->ast, $newUseStatements);
         $traverser->addVisitor($visitor);
 
         $this->ast = $traverser->traverse($this->ast);
