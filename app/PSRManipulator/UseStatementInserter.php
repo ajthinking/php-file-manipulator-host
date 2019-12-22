@@ -35,10 +35,12 @@ class UseStatementInserter extends NodeVisitorAbstract {
     public function afterTraverse(array $nodes) {
         if(!$this->useCount) {
             array_unshift(
-                $this->ast,
-                (new BuilderFactory)->namespace($newNamespace)->getNode()
+                $nodes,
+                (new BuilderFactory)->use($this->newUseStatements[0])->getNode()
             );            
         }
+
+        return $nodes;
     }    
 
     public function leaveNode(Node $node) {
@@ -48,6 +50,7 @@ class UseStatementInserter extends NodeVisitorAbstract {
             $newUseNodes = collect($this->newUseStatements)->map(function($newUseStatement) {
                 return (new BuilderFactory)->use($newUseStatement)->getNode();
             });
+
             return collect([$node])->concat($newUseNodes)->toArray();
         }
     }    
