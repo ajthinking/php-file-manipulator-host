@@ -167,3 +167,6 @@ class PSRFileTest extends TestCase
 
 ## Currently does not support
 * GroupUse: `use Package\{Alfa, Beta};`
+
+## TODO
+[] Create a dedicated Storage disk (storage/php-file-manipulator/preview etc)
