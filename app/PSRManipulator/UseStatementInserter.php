@@ -20,10 +20,10 @@ use PhpParser\Node\Stmt\UseUse;
 use PhpParser\PrettyPrinter;
 
 class UseStatementInserter extends NodeVisitorAbstract {
-    public function __construct($ast, $newUseStatement)
+    public function __construct($root, $newUseStatements)
     {
-        $this->ast = $ast[0]->stmts;
-        $this->newUseStatement = $newUseStatement;
+        $this->ast = $root;
+        $this->newUseStatements = $newUseStatements;
         $this->useCount = $this->useCount();
         $this->currentUseIndex = 0;
     }
@@ -32,12 +32,23 @@ class UseStatementInserter extends NodeVisitorAbstract {
         //
     }
 
+    public function afterTraverse(array $nodes) {
+        if(!$this->useCount) {
+            array_unshift(
+                $this->ast,
+                (new BuilderFactory)->namespace($newNamespace)->getNode()
+            );            
+        }
+    }    
+
     public function leaveNode(Node $node) {
         if ($node instanceof Use_) $this->currentUseIndex++;
 
         if ($this->currentUseIndex == $this->useCount && $node instanceof Use_) {
-            $newUseNode = (new BuilderFactory)->use($this->newUseStatement)->getNode();
-            return [$node, $newUseNode];
+            $newUseNodes = collect($this->newUseStatements)->map(function($newUseStatement) {
+                return (new BuilderFactory)->use($newUseStatement)->getNode();
+            });
+            return collect([$node])->concat($newUseNodes)->toArray();
         }
     }    
 
