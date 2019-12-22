@@ -20,6 +20,22 @@ class PSRFileTest extends TestCase
     }
 
     /** @test */
+    public function it_has_path_getters()
+    {
+        $file = PSRFile::load(
+            $this->samplePath('app/User.php')
+        );
+
+        $this->assertTrue(
+            $file->relativePath() === 'tests/Unit/FileSamples/app/User.php'
+        );
+
+        $this->assertTrue(
+            $file->path() === base_path('tests/Unit/FileSamples/app/User.php')
+        );        
+    }    
+
+    /** @test */
     public function it_can_write_to_disc()
     {
         // Save a copy
@@ -44,7 +60,25 @@ class PSRFileTest extends TestCase
         $this->assertTrue(
             json_encode($this->userFile()->ast()) != json_encode($copy->ast())
         );
-    }    
+    }
+    
+    /** @test */
+    public function it_can_write_to_a_preview_folder()
+    {
+        // Save it
+        $this->userFile()->preview();
+
+        // Load it from the preview folder
+        $preview = PSRFile::load(
+            // this is long now, when using real files it will be just .preview/app/User.php
+            'storage/.preview/tests/Unit/FileSamples/app/User.php'
+        );
+
+        // It is valid
+        $this->assertTrue(
+            get_class($preview) === 'App\PSRManipulator\PSRFile'
+        );        
+    }
 
     /** @test */
     public function it_can_retrieve_namespace()
@@ -135,7 +169,7 @@ class PSRFileTest extends TestCase
         $this->assertTrue(
             $this->routesFile()->className("NewName")->className() === null
         );        
-    }     
+    }
 
     protected function samplePath($name)
     {
