@@ -70,6 +70,16 @@ class PSRFile implements PSRFileInterface
         return $newNamespace ? $this->setNamespace($newNamespace) : $this->getNamespace();
     }
 
+    public function removeNamespace()
+    {
+        $namespace = (new NodeFinder)->findFirstInstanceOf($this->ast, Namespace_::class);
+        if($namespace) {
+            $this->ast = $namespace->stmts;
+        }
+
+        return $this;
+    }    
+
     public function useStatements($newUseStatements = false)
     {
         return $newUseStatements ? $this->setUseStatements($newUseStatements) : $this->getUseStatements();
@@ -179,7 +189,9 @@ class PSRFile implements PSRFileInterface
             $newUseStatements);
         $traverser->addVisitor($visitor);
 
-        $this->ast = $traverser->traverse($this->ast);
+        $this->ast = $traverser->traverse(
+            $namespace ? $this->ast[0]->stmts : $this->ast
+        );
 
         return $this;
     }
