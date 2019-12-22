@@ -18,6 +18,7 @@ use App\PSRManipulator\PSR2PrettyPrinter;
 use PhpParser\BuilderFactory;
 use PhpParser\Node\Stmt\UseUse;
 use PhpParser\PrettyPrinter;
+use Illuminate\Support\Facades\Storage;
 
 use App\PSRManipulator\PSRFileInterface;
 
@@ -25,9 +26,11 @@ class PSRFile implements PSRFileInterface
 {
     /* Create instance **********************************/
 
-    public function __construct($fullPath)
+    public function __construct($relativePath)
     {
-        $this->path = $fullPath;
+        $this->path = base_path($relativePath);
+        $this->relativePath = $relativePath;
+        
         $this->contents = file_get_contents($this->path);
         # ast - abstract syntax tree
         $this->ast = $this->parse();
@@ -36,7 +39,7 @@ class PSRFile implements PSRFileInterface
     static function load($relativePath)
     {
         return new PSRFile(
-            base_path($relativePath)
+            $relativePath
         );
     }
 
@@ -46,6 +49,16 @@ class PSRFile implements PSRFileInterface
     {
         return $this->path;
     }
+
+    public function relativePath($newRelativePath = false)
+    {
+        if($newRelativePath) {
+            $this->path = base_path($newRelativePath);
+            $this->relativePath = $newRelativePath;
+        }
+
+        return $this->relativePath;
+    }    
 
     public function contents()
     {
@@ -106,7 +119,13 @@ class PSRFile implements PSRFileInterface
         file_put_contents($this->path,$code);
 
         return $this;
-    } 
+    }
+    
+    public function preview()
+    {
+        Storage::put(".preview/$this->relativePath", $this->print());
+        return $this;
+    }
 
     /* PRIVATE *******************************************/
 
