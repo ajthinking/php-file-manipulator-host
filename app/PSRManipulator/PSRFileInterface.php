@@ -3,7 +3,32 @@
 namespace App\PSRManipulator;
 
 /**
+ * -----------------------------------------------------------------------
  * This interface serves merely as documentation on the public PSRFile API
+ * 
+ * ------------------------------------------------------------------------
+ * Each PSRFile instance exposes the following resources
+ * namespace
+ * useStatements
+ * className
+ * classExtends
+ * classImplements
+ * traits
+ * properties
+ * methods
+ * 
+ * ------------------------------------------------------------------------
+ * API conventions  
+ * Fetch values:        $file->__KEY__()
+ * Overwrite values:    $file->__KEY__($values)
+ * Add values:          $file->add__KEY__($values)
+ * Remove values        $file->remove__KEY__($values)
+ * 
+ * ------------------------------------------------------------------------
+ * Other public methods
+ * load, print, preview, save as documented below 
+ * 
+ * ------------------------------------------------------------------------
  */
 interface PSRFileInterface {
     /**
