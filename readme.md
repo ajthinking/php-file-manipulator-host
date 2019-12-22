@@ -166,8 +166,30 @@ class PSRFileTest extends TestCase
 ```
 
 ## Currently does not support
-* GroupUse: `use Package\{Alfa, Beta};`
+* `GroupUse`, example:  `use Package\{Alfa, Beta};`
 
 ## TODO
-[] Create a dedicated Storage disk (storage/php-file-manipulator/preview etc)
-[] Solve difference for namespaced and not namespaced files
+
+### General 
+
+| task | status |
+|------|--------|
+| Create a dedicated Storage disk (storage/php-file-manipulator/preview etc) | - |
+| Solve difference for namespaced and not namespaced files | - |
+| it_can_add_use_statements_with_alias | - |
+
+### API
+
+
+| resource       | get| set | add | remove |
+|----------------|----|-----|-----|--------|
+| namespace      | X  | X   | N/A | X      |
+| namespaceNS    | X  | X   | N/A | X      |
+| useStatements  | X  | X   | X   | -      |
+| useStatements0U|  - | -   | -   | -      |
+| className      |  - | -   | -   | -      |
+| classExtends   |  - | -   | -   | -      |
+| classImplements|  - | -   | -   | -      |
+| traits         |  - | -   | -   | -      |
+| properties     |  - | -   | -   | -      |
+| methods        |  - | -   | -   | -      |
