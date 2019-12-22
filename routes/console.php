@@ -116,6 +116,6 @@ Artisan::command('parse', function () use($dumper, $ast) {
 */
 
 Artisan::command('psr:sample {path}', function ($path) {
-    PSRFile::load("tests/Unit/FileSamples/$path")
-        ->save('tests/Unit/FileSamples/.output/' . basename($path));
+    PSRFile::load("tests/FileSamples/$path")
+        ->save('tests/FileSamples/.output/' . basename($path));
 });
