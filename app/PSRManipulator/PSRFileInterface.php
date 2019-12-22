@@ -18,7 +18,7 @@ namespace App\PSRManipulator;
  * methods
  * 
  * ------------------------------------------------------------------------
- * API conventions  
+ * API conventions used where applicable
  * Fetch values:        $file->__KEY__()
  * Overwrite values:    $file->__KEY__($values)
  * Add values:          $file->add__KEY__($values)
