@@ -1,184 +1,63 @@
 # PHP-FILE-MANIPULATOR
 > Danger zone! Tools to manipulate PHP file on disk. WIP.
 
-Get started by looking at the tests
+## Examples
+
+### 
 ```php
-<?php
 
-namespace Tests\Unit;
+// list class methods
+PHPFile::load('app/User.php')
+    ->classMethods()
 
-use Tests\TestCase;
-use App\PSRManipulator\PSRFile;
+// move User.php to a Models directory
+PHPFile::load('app/User.php')
+    ->namespace('App\Models')
+    ->move('app/Models/User.php')
 
-class PSRFileTest extends TestCase
-{
-    /** @test */
-    public function it_can_read_from_disc()
-    {
-        $file = PSRFile::load(
-            $this->samplePath('app/User.php')
-        );
+// install a package trait
+PHPFile::load('app/User.php')
+    ->addUseStatements('Package\Tool')
+    ->addTraitUseStatement('Tool')
+    ->save()
 
-        $this->assertTrue(
-            get_class($file) === 'App\PSRManipulator\PSRFile'
-        );
-    }
+// add relationship methods
+LaravelFile::load('app/User.php')
+    ->addHasMany('App\Car')
+    ->addHasOne('App\Life')
+    ->addBelongsTo('App\Wife')
+    ->save()
 
-    /** @test */
-    public function it_can_write_to_a_file_to_disc()
-    {
-        // Save a copy
-        $this->userFile()->save(
-            $this->samplePath('.output/User.php')
-        );
-
-        // Read it
-        $copy = PSRFile::load(
-            $this->samplePath('.output/User.php')
-        );
-
-        // Ensuring it is valid
-        $this->assertTrue(
-            get_class($copy) === 'App\PSRManipulator\PSRFile'
-        );
-
-        // NOTE: When pretty printing some of the array formatting may change
-        // For instance the $fillable array in Laravels default User class
-        // Compare Filesamples/User.php <---> Filesamples/.output/User.php
-        // For now expect non identical ASTs
-        $this->assertTrue(
-            json_encode($this->userFile()->ast()) != json_encode($copy->ast())
-        );
-    }    
-
-    /** @test */
-    public function it_can_retrieve_namespace()
-    {
-        // on a file with namespace
-        $this->assertTrue(
-            $this->userFile()->namespace() === 'App'
-        );
-
-        // on a file without namespace
-        $this->assertTrue(
-            $this->routesFile()->namespace() === null
-        );
-    }
-
-    /** @test */
-    public function it_can_set_namespace()
-    {
-        // on a file with namespace
-        $this->assertTrue(
-            $this->userFile()->namespace('New\Namespace')->namespace() === 'New\Namespace'
-        );
-
-        // on a file without namespace
-        $this->assertTrue(
-            $this->routesFile()->namespace('New\Namespace')->namespace() === 'New\Namespace'
-        );        
-    }    
+// add a route
+LaravelFile::load('routes/web.php')
+    ->addRoute('dummy', 'Controller@method')
+    ->save()
     
-    /** @test */
-    public function it_can_retrieve_use_statements()
-    {
-        $file = $this->userFile();
-        $file = $this->routesFile();
-        $useStatements = $file->useStatements();
-        $expectedUseStatements = collect([
-            "Illuminate\Notifications\Notifiable",
-            "Illuminate\Contracts\Auth\MustVerifyEmail",
-            "Illuminate\Foundation\Auth\User as Authenticatable",
-        ]);
+// preview will write result relative to storage/.preview
+LaravelFile::load('app/User.php')
+    ->setClassName('Mistake')
+    ->preview()
 
-        $expectedUseStatements->each(function($expectedUseStatement) use($useStatements){
-            $this->assertTrue(
-                collect($useStatements)->contains($expectedUseStatement)
-            );
-        });
-    }
-    
-    /** @test */
-    public function it_can_add_use_statements()
-    {
-        $file = $this->userFile();
-
-        $useStatements = $file->useStatements('App\Some\New\Model')->useStatements();
-        $expectedUseStatements = collect([
-            "Illuminate\Notifications\Notifiable",
-            "Illuminate\Contracts\Auth\MustVerifyEmail",
-            "Illuminate\Foundation\Auth\User as Authenticatable",
-            "App\Some\New\Model",
-        ]);
-
-        $expectedUseStatements->each(function($expectedUseStatement) use($useStatements){
-            $this->assertTrue(
-                collect($useStatements)->contains($expectedUseStatement)
-            );
-        });
-    }
-
-    /** @test */
-    public function it_can_retrieve_class_name()
-    {
-        $file = $this->userFile();
-
-        $this->assertTrue(
-            $file->className() === "User"
-        );
-    }
-    
-    /** @test */
-    public function it_can_set_class_name()
-    {
-        // on a file with a class
-        $this->assertTrue(
-            $this->userFile()->className("NewName")->className() === "NewName"
-        );
-
-        // on a file without a class
-        $this->assertTrue(
-            $this->routesFile()->className("NewName")->className() === null
-        );        
-    }     
-
-    protected function samplePath($name)
-    {
-        return "tests/Unit/FileSamples/$name";
-    }
-
-    protected function userFile()
-    {
-        return PSRFile::load(
-            $this->samplePath('app/User.php')
-        );        
-    }
-    
-    protected function routesFile()
-    {
-        return PSRFile::load(
-            $this->samplePath('routes/web.php')
-        );        
-    }    
-}
-
+// add items to protected properties
+LaravelFile::load('app/User.php')
+    ->addFillable('message')
+    ->addCasts(['is_admin' => 'boolean'])
+    ->addHidden('secret')    
 
 ```
 
-## Currently does not support
-* `GroupUse`, example:  `use Package\{Alfa, Beta};`
-
 ## TODO
 
-### General 
 
 | task | status |
 |------|--------|
 | Create a dedicated Storage disk (storage/php-file-manipulator/preview etc) | - |
 | Solve difference for namespaced and not namespaced files | - |
 | it_can_add_use_statements_with_alias | - |
+| `GroupUse`, example:  `use Package\{Alfa, Beta};` | - |
 
-### API
+
+## API status
 
 
 | resource       | get| set | add | remove |
