@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Resources;
 
 use Tests\TestCase;
 use App\PSRManipulator\PSRFile;
 
-class ClassTest extends TestCase
+class ClassNameTest extends TestCase
 {
     /** @test */
     public function it_can_retrieve_class_name()

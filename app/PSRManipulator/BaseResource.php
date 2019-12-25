@@ -1,0 +1,40 @@
+<?php
+
+namespace App\PSRManipulator;
+
+use BadMethodCallException;
+
+abstract class BaseResource
+{
+    public function __construct(PHPFile $file)
+    {
+        $this->file = $file;      
+    }
+
+    const NOT_IMPLEMENTED = 'Method not implemented for this resource';
+
+    public function get()
+    {
+        throw new BadMethodCallException($this::NOT_IMPLEMENTED);
+    }
+
+    public function set()
+    {
+        throw new BadMethodCallException($this::NOT_IMPLEMENTED);
+    }
+    
+    public function add()
+    {
+        throw new BadMethodCallException($this::NOT_IMPLEMENTED);
+    }
+    
+    public function remove()
+    {
+        throw new BadMethodCallException($this::NOT_IMPLEMENTED);
+    }
+    
+    public function ast()
+    {
+        return $this->file->ast();
+    }
+}

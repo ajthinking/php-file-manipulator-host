@@ -76,13 +76,6 @@ interface PSRFileInterface {
      * @return void
      */
     public function className($newClassName = false);
-    
-    /**
-     * Undocumented function
-     *
-     * @return void
-     */
-    public function classMethods();
 
     /**
      * Undocumented function

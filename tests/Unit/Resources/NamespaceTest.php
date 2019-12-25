@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Resources;
 
 use Tests\TestCase;
 use App\PSRManipulator\PSRFile;

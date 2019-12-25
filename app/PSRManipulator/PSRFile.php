@@ -43,6 +43,11 @@ class PSRFile implements PSRFileInterface
         );
     }
 
+    public function ast()
+    {
+        return $this->ast;
+    }    
+
     /* API **********************************/
 
     public function path()
@@ -89,13 +94,6 @@ class PSRFile implements PSRFileInterface
     {
         return $newClassName ? $this->setClassName($newClassName) : $this->getClassName();
     }
-    
-    public function classMethods()
-    {
-        dd(
-            (new NodeFinder)->findInstanceOf($this->ast, Node\Stmt\ClassMethod::class)
-        );
-    }
 
     public function addClassMethod($classMethodStatements)
     {
@@ -137,12 +135,67 @@ class PSRFile implements PSRFileInterface
         return $this;
     }
 
+    public function implements($newImplements = false)
+    {
+        return $newImplements ? $this->setImplements($newImplements) : $this->getImplements(); 
+    }
+
+    public function addImplements($newImplements)
+    {
+        $class = (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class);
+        if($class) {
+            $class->implements = array_merge($class->implements, $newImplements);
+        }
+        return $this;
+    }
+
+    public function extends($newExtends = false)
+    {
+        return $newExtends ? $this->setExtends($newExtends) : $this->getExtends(); 
+    }
+
+    public function methodNames()
+    {
+        $methods = (new NodeFinder)->findInstanceOf($this->ast, ClassMethod::class);
+        return collect($methods)->map(function($method) {
+            return $method->name->name;
+        })->toArray();
+    }
+
+    public function methods()
+    {
+        return (new NodeFinder)->findInstanceOf($this->ast, ClassMethod::class);
+    }    
+
     /* PRIVATE *******************************************/
 
-    public function ast()
+    private function getExtends()
     {
-        return $this->ast;
-    }   
+        $class = (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class);
+        return $class ? join('\\', $class->extends->parts) : null;
+    }
+
+    private function setExtends($newExtends)
+    {
+        $class = (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class);
+        $class->extends = new \PhpParser\Node\Name($newExtends);
+        return $this;
+    }    
+
+    private function getImplements()
+    {
+        $class = (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class);
+        return $class ? $class->implements : null;
+    }
+
+    private function setImplements($newImplements)
+    {
+        $class = (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class);
+        if($class) {
+            $class->implements = $newImplements;
+        }
+        return $this;
+    }
 
     private function getNamespace()
     {
@@ -209,8 +262,8 @@ class PSRFile implements PSRFileInterface
 
     private function getClassName()
     {
-        $className = (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class);
-        return $className ? $className->name->name : null;        
+        $class = (new NodeFinder)->findFirstInstanceOf($this->ast, Node\Stmt\Class_::class);
+        return $class ? $class->name->name : null;        
     }
 
     private function setClassName($newClassName)
