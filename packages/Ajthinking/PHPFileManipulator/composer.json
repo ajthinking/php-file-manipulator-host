@@ -1,10 +1,11 @@
 {
-    "name": "laravel/laravel",
-    "type": "project",
-    "description": "The Laravel Framework.",
+    "name": "ajthinking/php-file-manipulator",
+    "type": "package",
+    "description": "Programatically edit PHP and Laravel files.",
     "keywords": [
-        "framework",
-        "laravel"
+        "php",
+        "laravel",
+        "ast"
     ],
     "license": "MIT",
     "require": {
@@ -29,13 +30,15 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [],
+            "providers": [
+                "Ajthinking\\PHPFileManipulator\\ServiceProvider"
+            ]            
         }
     },
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Ajthinking\\PHPFileManipulator\\": "packages/Ajthinking/PHPFileManipulator/src/"
+            "App\\": "app/"
         },
         "classmap": [
             "database/seeds",

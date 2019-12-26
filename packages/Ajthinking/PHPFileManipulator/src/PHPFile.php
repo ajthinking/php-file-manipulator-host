@@ -1,9 +1,9 @@
 <?php
 
-namespace App\PSRManipulator;
+namespace Ajthinking\PHPFileManipulator;
 
-use App\PSRManipulator\Traits\DelegatesAPICalls;
-use App\PSRManipulator\Traits\HasIO;
+use Ajthinking\PHPFileManipulator\Traits\DelegatesAPICalls;
+use Ajthinking\PHPFileManipulator\Traits\HasIO;
 
 class PHPFile
 {

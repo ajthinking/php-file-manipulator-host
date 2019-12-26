@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use App\PSRManipulator\PHPFile;
+use Ajthinking\PHPFileManipulator\PHPFile;
 
 abstract class TestCase extends BaseTestCase
 {

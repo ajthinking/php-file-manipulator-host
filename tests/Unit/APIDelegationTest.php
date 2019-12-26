@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\PSRManipulator\PHPFile;
+use Ajthinking\PHPFileManipulator\PHPFile;
 use BadMethodCallException;
 
 class APIDelegationTest extends TestCase

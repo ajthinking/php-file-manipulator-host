@@ -1,18 +1,10 @@
 <?php
 
-namespace App\PSRManipulator;
+namespace Ajthinking\PHPFileManipulator;
 
-use PhpParser\Error;
-use PhpParser\NodeDumper;
-use PhpParser\ParserFactory;
-use PhpParser\Node;
-use PhpParser\Node\Stmt\Function_;
 use PhpParser\Node\Stmt\Class_;
-use PhpParser\Node\Stmt\Use_;
-use PhpParser\Node\Stmt\ClassMethod;
-use PhpParser\NodeTraverser;
-use PhpParser\NodeVisitorAbstract;
 use PhpParser\PrettyPrinter\Standard as StandardPrettyPrinter;
+use PhpParser\Node\Stmt\Nop;
 
 class PSR2PrettyPrinter extends StandardPrettyPrinter {
     // Fix empty line before class definition
@@ -48,7 +40,7 @@ class PSR2PrettyPrinter extends StandardPrettyPrinter {
             $comments = $node->getComments();
             if ($comments) {
                 $result .= $this->nl . $this->pComments($comments);
-                if ($node instanceof Stmt\Nop) {
+                if ($node instanceof Nop) {
                     continue;
                 }
             }

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\PSRManipulator;
+namespace Ajthinking\PHPFileManipulator;
 
+use Ajthinking\PHPFileManipulator\PHPFile;
 use BadMethodCallException;
 
 abstract class BaseResource

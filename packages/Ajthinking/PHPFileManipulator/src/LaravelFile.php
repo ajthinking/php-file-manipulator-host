@@ -1,8 +1,8 @@
 <?php
 
-namespace App\PSRManipulator;
+namespace Ajthinking\PHPFileManipulator;
 
-use App\PSRManipulator\PHPFile;
+use Ajthinking\PHPFileManipulator\PHPFile;
 
 class LaravelFile extends PHPFile 
 {

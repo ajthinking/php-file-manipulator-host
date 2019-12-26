@@ -3,7 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\PSRManipulator\PHPFile;
+use Ajthinking\PHPFileManipulator\PHPFile;
 
 class PHPFileTest extends TestCase
 {
@@ -15,7 +15,7 @@ class PHPFileTest extends TestCase
         );
 
         $this->assertTrue(
-            get_class($file) === 'App\PSRManipulator\PHPFile'
+            get_class($file) === 'Ajthinking\PHPFileManipulator\PHPFile'
         );
     }
 
@@ -50,7 +50,7 @@ class PHPFileTest extends TestCase
 
         // Ensuring it is valid
         $this->assertTrue(
-            get_class($copy) === 'App\PSRManipulator\PHPFile'
+            get_class($copy) === 'Ajthinking\PHPFileManipulator\PHPFile'
         );
 
         // NOTE: When pretty printing some of the array formatting may change
@@ -75,7 +75,7 @@ class PHPFileTest extends TestCase
 
         // It is valid
         $this->assertTrue(
-            get_class($preview) === 'App\PSRManipulator\PHPFile'
+            get_class($preview) === 'Ajthinking\PHPFileManipulator\PHPFile'
         );        
     }   
 }

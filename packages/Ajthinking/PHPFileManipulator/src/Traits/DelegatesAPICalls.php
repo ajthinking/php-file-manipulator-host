@@ -1,6 +1,6 @@
 <?php
 
-namespace App\PSRManipulator\Traits;
+namespace Ajthinking\PHPFileManipulator\Traits;
 use Illuminate\Support\Str;
 use BadMethodCallException;
 
@@ -45,7 +45,7 @@ trait DelegatesAPICalls
 
         if(!$resource) return;
 
-        $resourceClass = "App\PSRManipulator\Resources\\" . Str::studly($resource) . "Resource";
+        $resourceClass = "Ajthinking\PHPFileManipulator\Resources\\" . Str::studly($resource) . "Resource";
         return new $resourceClass($this);
     }
 

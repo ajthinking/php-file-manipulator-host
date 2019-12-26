@@ -1,6 +1,6 @@
 <?php
 
-namespace App\PSRManipulator;
+namespace Ajthinking\PHPFileManipulator;
 
 /**
  * -----------------------------------------------------------------------
