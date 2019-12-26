@@ -46,6 +46,12 @@ LaravelFile::load('app/User.php')
 
 ```
 
+## Running tests
+```bash
+# for now im running the test from the host project root like this
+vendor/phpunit/phpunit/phpunit packages/Ajthinking/PHPFileManipulator/tests
+```
+
 ## TODO
 
 
