@@ -25,11 +25,22 @@ class NamespaceResource extends BaseResource
         } else {
             // Add a namespace
             array_unshift(
-                $this->ast(),
+                $this->file->ast,
                 (new BuilderFactory)->namespace($newNamespace)->getNode()
             );
         }
         
         return $this->file;
     }
+
+    public function remove($_ = null)
+    {
+        $namespace = (new NodeFinder)->findFirstInstanceOf($this->ast(), Namespace_::class);
+        
+        if($namespace) {
+            $this->file->ast = $namespace->stmts;
+        }
+
+        return $this->file;
+    }    
 }

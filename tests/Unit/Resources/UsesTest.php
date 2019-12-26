@@ -3,16 +3,15 @@
 namespace Tests\Unit\Resources;
 
 use Tests\TestCase;
-use App\PSRManipulator\PSRFile;
 
-class UseStatementsTest extends TestCase
+class UsesTest extends TestCase
 {
     /** @test */
     public function it_can_retrieve_use_statements()
     {
         // A file with use statements
         $file = $this->userFile();
-        $useStatements = $file->useStatements();
+        $useStatements = $file->uses();
         $expectedUseStatements = collect([
             "Illuminate\Notifications\Notifiable",
             "Illuminate\Contracts\Auth\MustVerifyEmail",
@@ -27,7 +26,7 @@ class UseStatementsTest extends TestCase
 
         // A file without use statements
         $file = $this->routesFile();
-        $useStatements = $file->useStatements();
+        $useStatements = $file->uses();
 
         $this->assertTrue(
             collect($useStatements)->count() === 0
@@ -40,7 +39,9 @@ class UseStatementsTest extends TestCase
     {
         // on a file with use statements        
         $file = $this->userFile();
-        $useStatements = $file->addUseStatements(['Add\This'])->useStatements();
+
+        $useStatements = $file->addUses(['Add\This'])->uses();
+
         $expectedUseStatements = collect([
             "Illuminate\Notifications\Notifiable",
             "Illuminate\Contracts\Auth\MustVerifyEmail",
@@ -61,7 +62,7 @@ class UseStatementsTest extends TestCase
                 
         $file = $this->routesFile();
         
-        $useStatements = $file->addUseStatements(['Add\This'])->useStatements();
+        $useStatements = $file->addUses(['Add\This'])->uses();
         
         $expectedUseStatements = collect([            
             "Add\This",            
@@ -78,7 +79,7 @@ class UseStatementsTest extends TestCase
     public function it_can_add_use_statements_with_alias()
     {        
         $file = $this->routesFile();
-        $useStatements = $file->addUseStatements(['Add\This as Wow'])->useStatements();
+        $useStatements = $file->addUses(['Add\This as Wow'])->uses();
         $expectedUseStatements = collect([            
             "Add\This as Wow",            
         ]);
@@ -96,7 +97,7 @@ class UseStatementsTest extends TestCase
     {
         $file = $this->userFile();
 
-        $useStatements = $file->useStatements(['Only\This'])->useStatements();
+        $useStatements = $file->uses(['Only\This'])->uses();
         $expectedUseStatements = collect([
             "Only\This",
         ]);

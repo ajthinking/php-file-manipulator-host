@@ -3,7 +3,6 @@
 namespace Tests\Unit\Resources;
 
 use Tests\TestCase;
-use App\PSRManipulator\PSRFile;
 
 class ClassExtendsTest extends TestCase
 {
@@ -13,17 +12,17 @@ class ClassExtendsTest extends TestCase
         $file = $this->userFile();
 
         $this->assertTrue(
-            $file->extends() === 'Authenticatable'
+            $file->classExtends() === 'Authenticatable'
         );
     }
 
     /** @test */
     public function it_can_set_class_implements()
     {
-        $file = $this->userFile()->extends("My\BaseClass");
+        $file = $this->userFile()->classExtends("My\BaseClass");
 
         $this->assertTrue(
-            $file->extends() === "My\BaseClass"
+            $file->classExtends() === "My\BaseClass"
         );
     } 
 }

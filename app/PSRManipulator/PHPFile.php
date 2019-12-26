@@ -5,20 +5,20 @@ namespace App\PSRManipulator;
 use App\PSRManipulator\Traits\DelegatesAPICalls;
 use App\PSRManipulator\Traits\HasIO;
 
-class PHPFile //implements PHPFileInterface
+class PHPFile
 {
     use DelegatesAPICalls;
     use HasIO;
-
+    
     protected $resources = [
         'namespace',
         'uses',
         'className',
         'classExtends',
         'classImplements',
-        'classUseTraits',
-        'classConst',
-        'classMethods',
-        'classMethodNames',
+        // 'classUseTraits',
+        // 'classConst',
+        // 'classMethods',
+        // 'classMethodNames',
     ];
 }

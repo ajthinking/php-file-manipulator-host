@@ -11,5 +11,6 @@ class LaravelFile extends PHPFile
         'fillable',
         'hidden',
         'routes',
+        'hasManyMethod' // get, set, add, remove
     ];
 }

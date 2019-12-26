@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use App\PSRManipulator\PSRFile;
+use App\PSRManipulator\PHPFile;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -16,14 +16,14 @@ abstract class TestCase extends BaseTestCase
 
     protected function userFile()
     {
-        return PSRFile::load(
+        return PHPFile::load(
             $this->samplePath('app/User.php')
         );        
     }
     
     protected function routesFile()
     {
-        return PSRFile::load(
+        return PHPFile::load(
             $this->samplePath('routes/web.php')
         );        
     }    

@@ -18,17 +18,17 @@ abstract class BaseResource
         throw new BadMethodCallException($this::NOT_IMPLEMENTED);
     }
 
-    public function set()
+    public function set($args)
     {
         throw new BadMethodCallException($this::NOT_IMPLEMENTED);
     }
     
-    public function add()
+    public function add($args)
     {
         throw new BadMethodCallException($this::NOT_IMPLEMENTED);
     }
     
-    public function remove()
+    public function remove($args = null)
     {
         throw new BadMethodCallException($this::NOT_IMPLEMENTED);
     }

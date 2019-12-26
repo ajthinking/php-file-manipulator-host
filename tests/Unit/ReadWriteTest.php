@@ -3,27 +3,26 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\PSRManipulator\PSRFile;
-use NamespaceTests;
+use App\PSRManipulator\PHPFile;
 
-class PSRFileTest extends TestCase
+class PHPFileTest extends TestCase
 {
     /** @test */
     public function it_can_read_from_disc()
     {
-        $file = PSRFile::load(
+        $file = PHPFile::load(
             $this->samplePath('app/User.php')
         );
 
         $this->assertTrue(
-            get_class($file) === 'App\PSRManipulator\PSRFile'
+            get_class($file) === 'App\PSRManipulator\PHPFile'
         );
     }
 
     /** @test */
     public function it_has_path_getters()
     {
-        $file = PSRFile::load(
+        $file = PHPFile::load(
             $this->samplePath('app/User.php')
         );
 
@@ -45,13 +44,13 @@ class PSRFileTest extends TestCase
         );
 
         // Read it
-        $copy = PSRFile::load(
+        $copy = PHPFile::load(
             $this->samplePath('.output/User.php')
         );
 
         // Ensuring it is valid
         $this->assertTrue(
-            get_class($copy) === 'App\PSRManipulator\PSRFile'
+            get_class($copy) === 'App\PSRManipulator\PHPFile'
         );
 
         // NOTE: When pretty printing some of the array formatting may change
@@ -70,13 +69,13 @@ class PSRFileTest extends TestCase
         $this->userFile()->preview();
 
         // Load it from the preview folder
-        $preview = PSRFile::load(
+        $preview = PHPFile::load(
             'storage/.preview/tests/FileSamples/app/User.php'
         );
 
         // It is valid
         $this->assertTrue(
-            get_class($preview) === 'App\PSRManipulator\PSRFile'
+            get_class($preview) === 'App\PSRManipulator\PHPFile'
         );        
     }   
 }

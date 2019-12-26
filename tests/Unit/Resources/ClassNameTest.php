@@ -3,7 +3,6 @@
 namespace Tests\Unit\Resources;
 
 use Tests\TestCase;
-use App\PSRManipulator\PSRFile;
 
 class ClassNameTest extends TestCase
 {

@@ -2,22 +2,11 @@
 
 namespace App\PSRManipulator;
 
-use PhpParser\Node\Stmt\Namespace_;
-use PhpParser\Error;
-use PhpParser\NodeDumper;
-use PhpParser\ParserFactory;
 use PhpParser\Node;
 use PhpParser\NodeFinder;
-use PhpParser\Node\Stmt\Function_;
-use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\Use_;
-use PhpParser\Node\Stmt\ClassMethod;
-use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
-use App\PSRManipulator\PSR2PrettyPrinter;
 use PhpParser\BuilderFactory;
-use PhpParser\Node\Stmt\UseUse;
-use PhpParser\PrettyPrinter;
 
 class UseStatementInserter extends NodeVisitorAbstract {
     public function __construct($root, $newUseStatements)
@@ -26,10 +15,6 @@ class UseStatementInserter extends NodeVisitorAbstract {
         $this->newUseStatements = $newUseStatements;
         $this->useCount = $this->useCount();
         $this->currentUseIndex = 0;
-    }
-
-    public function beforeTraverse(array $nodes) {
-        //
     }
 
     public function afterTraverse(array $nodes) {

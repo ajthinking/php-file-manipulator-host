@@ -3,7 +3,6 @@
 namespace Tests\Unit\Resources;
 
 use Tests\TestCase;
-use App\PSRManipulator\PSRFile;
 
 class ClassImplementsTest extends TestCase
 {
@@ -13,19 +12,19 @@ class ClassImplementsTest extends TestCase
         $file = $this->userFile();
 
         $this->assertTrue(
-            $file->implements() === []
+            $file->classImplements() === []
         );
     }
 
     /** @test */
     public function it_can_set_class_implements()
     {
-        $file = $this->userFile()->implements([
+        $file = $this->userFile()->classImplements([
         "MyInterface" 
         ]);
 
         $this->assertTrue(
-            $file->implements() === [
+            $file->classImplements() === [
                 "MyInterface" 
             ]
         );
@@ -34,14 +33,12 @@ class ClassImplementsTest extends TestCase
     /** @test */
     public function it_can_add_class_implements()
     {
-        $file = $this->userFile()->addImplements([
-        "MyFirstInterface" 
-        ])->addImplements([
-            "MySecondInterface" 
-        ]);
+        $file = $this->userFile()
+            ->addClassImplements(["MyFirstInterface" ])
+            ->addClassImplements(["MySecondInterface" ]);
 
         $this->assertTrue(
-            $file->implements() === [
+            $file->classImplements() === [
                 "MyFirstInterface",
                 "MySecondInterface"
             ]
