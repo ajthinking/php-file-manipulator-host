@@ -57,6 +57,9 @@ vendor/phpunit/phpunit/phpunit packages/Ajthinking/PHPFileManipulator/tests
 
 | task | status |
 |------|--------|
+| expose method for custom actions | - |
+| Strategy for method resources| - |
+| Make the test work without being inside a host application| - |
 | Create a dedicated Storage disk (storage/php-file-manipulator/preview etc) | - |
 | Solve difference for namespaced and not namespaced files | - |
 | it_can_add_use_statements_with_alias | - |
