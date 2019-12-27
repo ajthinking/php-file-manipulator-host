@@ -21,6 +21,14 @@ PHPFile::load('app/User.php')
     ->addTraitUseStatement('Tool')
     ->save()
 
+// find files with the query builder
+PHPFile::in('database/migrations')
+    ->where('classExtends', 'Migration')
+    ->get()
+    ->each(function($file) {
+        echo $file->className()
+    });
+
 // add relationship methods
 LaravelFile::load('app/User.php')
     ->addHasMany('App\Car')
