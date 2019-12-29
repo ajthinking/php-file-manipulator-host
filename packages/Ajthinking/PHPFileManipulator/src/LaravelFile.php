@@ -13,4 +13,8 @@ class LaravelFile extends PHPFile
         'routes',
         'hasManyMethod' // get, set, add, remove
     ];
+
+    protected $snippets = [
+        'hasManyMethod',
+    ];
 }
