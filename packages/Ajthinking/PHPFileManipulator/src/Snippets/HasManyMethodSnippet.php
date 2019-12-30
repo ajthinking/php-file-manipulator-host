@@ -2,11 +2,12 @@
 
 namespace Ajthinking\PHPFileManipulator\Snippets;
 
+use Ajthinking\PHPFileManipulator\BaseSnippet;
 use PhpParser\BuilderFactory;
 use PhpParser\PrettyPrinter;
 use PhpParser\Node;
 
-class HasManyMethodSnippet
+class HasManyMethodSnippet extends BaseSnippet
 {
     public function renderAST($targetClass)
     {
@@ -24,7 +25,7 @@ class HasManyMethodSnippet
                               */')
             ->getNode();
         
-        dd($method);     
+        dd("Snippet callad!");     
 
         return;
     }

@@ -3,16 +3,18 @@
 namespace Ajthinking\PHPFileManipulator\Traits;
 use Illuminate\Support\Str;
 use BadMethodCallException;
+use Ajthinking\PHPFileManipulator\BaseResource;
+use Ajthinking\PHPFileManipulator\BaseSnippet;
 
 trait DelegatesAPICalls
 {
     public function __call($method, $args) {
-        // Find handler resource instance
-        $resource = $this->getTargetResource($method);
+        // Find handler instance (resource, snippet or this)
+        $handler = $this->getHandler($method);
         // setter, getter, adder, remover or other ?
         $requestType = $this->getRequestType($method, $args);
-        // dispatch method call to resource handler or fallback to $this
-        return $resource ? $resource->$requestType(...$args) : $this->callOnSelf($method, ...$args);
+        // dispatch method call to handler
+        return $handler->$requestType(...$args);
     }
 
     private function getRequestType($method, $args)
@@ -32,21 +34,37 @@ trait DelegatesAPICalls
             }            
         }
 
-        return 'other';
+        if($this->getHandler($method) instanceof BaseSnippet) return 'renderAST';
+
+        throw new BadMethodCallException("Could not resolve method type");
     }
 
-    private function getTargetResource($method)
+    private function getHandler($method)
     {
+        // Resource?
         $resource = collect($this->resources)->filter(function($resource) use($method) {
             return preg_match("/^$resource\$/i", $method)
                 || preg_match("/^add$resource\$/i", $method)
                 || preg_match("/^remove$resource\$/i", $method);
         })->first();
+        
+        if($resource) {
+            $resourceClass = "Ajthinking\PHPFileManipulator\Resources\\" . Str::studly($resource) . "Resource";
+            return new $resourceClass($this);
+        };
 
-        if(!$resource) return;
+        // Snippet?
+        $snippet = collect(isset($this->snippets) ? $this->snippets : [])->filter(function($snippet) use($method) {
+            return preg_match("/^$snippet\$/i", $method);
+        })->first();
+        
+        if($snippet) {
+            $snippetClass = "Ajthinking\PHPFileManipulator\Snippets\\" . Str::studly($snippet) . "Snippet";
+            return new $snippetClass($this);
+        };
 
-        $resourceClass = "Ajthinking\PHPFileManipulator\Resources\\" . Str::studly($resource) . "Resource";
-        return new $resourceClass($this);
+        // Defaults to $this
+        return $this;
     }
 
     private function callOnSelf($method, $args = [])
