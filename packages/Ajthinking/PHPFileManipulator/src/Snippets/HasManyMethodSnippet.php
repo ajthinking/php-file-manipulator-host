@@ -23,9 +23,7 @@ class HasManyMethodSnippet extends BaseSnippet
                               *
                               * @param SomeClass And takes a parameter
                               */')
-            ->getNode();
-        
-        dd("Snippet callad!");     
+            ->getNode();    
 
         return;
     }

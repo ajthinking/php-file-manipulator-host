@@ -72,7 +72,8 @@ vendor/phpunit/phpunit/phpunit packages/Ajthinking/PHPFileManipulator/tests
 | Solve difference for namespaced and not namespaced files | - |
 | it_can_add_use_statements_with_alias | - |
 | `GroupUse`, example:  `use Package\{Alfa, Beta};` | - |
-
+| how handle base_path() when not in a Laravel app? | - |
+| Fix broken instantiation (expected LaravelFile sometimes get PHPFile) | - |
 
 ## API status
 

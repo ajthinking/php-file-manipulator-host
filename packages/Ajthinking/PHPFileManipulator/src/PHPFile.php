@@ -13,18 +13,16 @@ class PHPFile
     use HasIO;
     use HasQueryBuilder;
     use HasSnippets;
-    
-    protected $resources = [
-        'namespace',
-        'uses',
-        'className',
-        'classExtends',
-        'classImplements',
-        'classMethods',
-        'classMethodNames',
-        // 'classUseTraits',
-        // 'classConst',
-        // 'classMethods',
-        // 'classMethodNames',
-    ];
+
+    public function resources() {
+        return collect([
+            'namespace',
+            'uses',
+            'className',
+            'classExtends',
+            'classImplements',
+            'classMethods',
+            'classMethodNames',            
+        ]);
+    }
 }

@@ -1,13 +1,27 @@
 <?php
 
-namespace Tests;
+namespace Ajthinking\PHPFileManipulator\Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Ajthinking\PHPFileManipulator\PHPFile;
+use Ajthinking\PHPFileManipulator\LaravelFile;
+use Illuminate\Contracts\Console\Kernel;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
+    /**
+     * Creates the application.
+     *
+     * @return \Illuminate\Foundation\Application
+     */
+    public function createApplication()
+    {
+        $app = require __DIR__.'/../../../../bootstrap/app.php';
+
+        $app->make(Kernel::class)->bootstrap();
+
+        return $app;
+    }
 
     protected function samplePath($name)
     {
@@ -20,6 +34,13 @@ abstract class TestCase extends BaseTestCase
             $this->samplePath('app/User.php')
         );        
     }
+
+    protected function laravelUserFile()
+    {
+        return new LaravelFile(
+            $this->samplePath('app/User.php')
+        );        
+    }    
     
     protected function routesFile()
     {

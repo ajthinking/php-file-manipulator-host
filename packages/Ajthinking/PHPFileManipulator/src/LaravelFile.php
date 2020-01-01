@@ -6,15 +6,13 @@ use Ajthinking\PHPFileManipulator\PHPFile;
 
 class LaravelFile extends PHPFile 
 {
-    protected $extraResources = [
-        'casts',
-        'fillable',
-        'hidden',
-        'routes',
-        'hasManyMethod' // get, set, add, remove
-    ];
-
-    protected $snippets = [
-        'hasManyMethod',
-    ];
+    public function resources() {
+        return parent::resources()->concat([
+            'casts',
+            'fillable',
+            'hidden',
+            'routes',
+            'hasManyMethods',
+        ]);
+    }
 }

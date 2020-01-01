@@ -35,7 +35,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
-            "Ajthinking\\PHPFileManipulator\\": "packages/Ajthinking/PHPFileManipulator/src/"
+            "Ajthinking\\PHPFileManipulator\\": "packages/Ajthinking/PHPFileManipulator/src/",
+            "Ajthinking\\PHPFileManipulator\\Tests\\": "packages/Ajthinking/PHPFileManipulator/tests/"
         },
         "classmap": [
             "database/seeds",

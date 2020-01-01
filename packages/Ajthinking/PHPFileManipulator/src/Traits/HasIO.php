@@ -50,7 +50,7 @@ trait HasIO
         // write current ast to file
         $prettyPrinter = new PSR2PrettyPrinter;
         $code = $prettyPrinter->prettyPrintFile($this->ast);
-        file_put_contents($this->path,$code);
+        file_put_contents($this->path, $code);
 
         return $this;
     }

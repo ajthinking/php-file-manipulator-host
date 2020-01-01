@@ -19,7 +19,7 @@ trait DelegatesAPICalls
 
     private function getRequestType($method, $args)
     {
-        foreach($this->resources as $resource) {
+        foreach($this->resources() as $resource) {
             // exact matches are getters/setters
             if(preg_match("/^$resource\$/i", $method)) {
                 return $args ? 'set' : 'get';
@@ -42,7 +42,7 @@ trait DelegatesAPICalls
     private function getHandler($method)
     {
         // Resource?
-        $resource = collect($this->resources)->filter(function($resource) use($method) {
+        $resource = $this->resources()->filter(function($resource) use($method) {
             return preg_match("/^$resource\$/i", $method)
                 || preg_match("/^add$resource\$/i", $method)
                 || preg_match("/^remove$resource\$/i", $method);

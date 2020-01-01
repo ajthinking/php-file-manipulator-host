@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Resources;
+namespace Ajthinking\PHPFileManipulator\Tests\Unit\Resources;
 
-use Tests\TestCase;
+use Ajthinking\PHPFileManipulator\Tests\TestCase;
 use PhpParser\Node\Stmt\ClassMethod;
 
 class ClassMethodsTest extends TestCase
@@ -28,14 +28,14 @@ class ClassMethodsTest extends TestCase
     }
     
     /** @wip-test */
-    public function it_can_add_a_class_method()
-    {
-        $methods = $this->userFile()->addClassMethods([
-            LaravelSnippet::method()
-        ])->classMethods();
+    // public function it_can_add_a_class_method()
+    // {
+    //     $methods = $this->userFile()->addClassMethods([
+    //         LaravelSnippet::method()
+    //     ])->classMethods();
 
-            collect($methods)->each(function($method) {
-                $this->assertInstanceOf(ClassMethod::class, $method);
-            });
-    }    
+    //         collect($methods)->each(function($method) {
+    //             $this->assertInstanceOf(ClassMethod::class, $method);
+    //         });
+    // }    
 }
