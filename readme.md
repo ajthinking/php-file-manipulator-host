@@ -1,5 +1,11 @@
 # PHP-FILE-MANIPULATOR
-> Danger zone! Tools to manipulate PHP file on disk. WIP.
+Programatically manipulate PHP / Laravel files on disk.
+> Danger zone! Work in progress
+
+## Installation
+```
+composer require ajthinking/php-file-manipulator
+```
 
 ## Examples
 
@@ -56,7 +62,7 @@ LaravelFile::load('app/User.php')
 
 ## Running tests
 ```bash
-# for now im running the test from the host project root like this
+# the test suite requires that you have the package installed in a laravel project
 vendor/phpunit/phpunit/phpunit packages/Ajthinking/PHPFileManipulator/tests
 ```
 
@@ -73,7 +79,7 @@ vendor/phpunit/phpunit/phpunit packages/Ajthinking/PHPFileManipulator/tests
 | it_can_add_use_statements_with_alias | - |
 | `GroupUse`, example:  `use Package\{Alfa, Beta};` | - |
 | how handle base_path() when not in a Laravel app? | - |
-| Fix broken instantiation (expected LaravelFile becomes get PHPFile when using LaravelFile::load())  | - |
+| fix addHasManyMethod to accept array instead of string | - |
 
 ## API status
 

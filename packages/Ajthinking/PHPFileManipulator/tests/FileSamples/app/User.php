@@ -32,4 +32,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(\App\Car::class);
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }    
 }
