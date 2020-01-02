@@ -17,9 +17,12 @@ class HasManyMethodsTest extends TestCase
         );
     }
 
-    // /** @test */
-    // public function it_can_insert_a_has_many_method()
-    // {
-    //     //
-    // }    
+    /** @wip-test */
+    public function it_can_insert_a_has_many_method()
+    {
+        $file = $this->laravelUserFile();
+        $file->addHasManyMethods('App\Post');
+
+        dd($file->print());
+    }    
 }
