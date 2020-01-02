@@ -37,7 +37,7 @@ abstract class TestCase extends BaseTestCase
 
     protected function laravelUserFile()
     {
-        return new LaravelFile(
+        return LaravelFile::load(
             $this->samplePath('app/User.php')
         );        
     }    

@@ -22,7 +22,7 @@ trait HasIO
 
     static function load($relativePath)
     {
-        return new PHPFile(
+        return new static(
             $relativePath
         );
     }    
