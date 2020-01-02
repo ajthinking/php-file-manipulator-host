@@ -3,7 +3,6 @@
 namespace Ajthinking\PHPFileManipulator\Tests\Unit\Resources;
 
 use Ajthinking\PHPFileManipulator\Tests\TestCase;
-use Ajthinking\PHPFileManipulator\PHPFile;
 use Ajthinking\PHPFileManipulator\LaravelFile;
 
 class HasManyMethodsTest extends TestCase
@@ -13,10 +12,14 @@ class HasManyMethodsTest extends TestCase
     {
         $file = $this->laravelUserFile();
 
-        //$file = $file->addHasManyMethods([]);
-
         $this->assertInstanceOf(
             LaravelFile::class, $file
         );
     }
+
+    // /** @test */
+    // public function it_can_insert_a_has_many_method()
+    // {
+    //     //
+    // }    
 }

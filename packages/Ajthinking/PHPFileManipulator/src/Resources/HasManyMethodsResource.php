@@ -10,7 +10,6 @@ class HasManyMethodsResource extends BaseResource
 {
     public function add($target)
     {
-        $class = (new NodeFinder)->findFirstInstanceOf($this->ast(), Class_::class);
-        return "Cool!";        
+        /** Make a shortcut here - so it can make use of PHPFile ClassMethods Resource */
     }
 }
