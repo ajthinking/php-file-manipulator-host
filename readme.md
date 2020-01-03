@@ -90,6 +90,17 @@ PRs and issues are welcome.
 | Make a minimal querybuilder | - |
 | Publish to packagist | - |
 
+## API
+
+| Resource | GET | SET | ADD | REMOVE |
+|------|--------|--------|--------|--------|
+| Namespace | yes | yes | | |
+| Uses | yes | yes | | |
+| ClassName | yes | yes | | |
+| ClassExtends | yes | yes | yes | yes |
+| ClassImplements | yes | yes | yes | yes |
+| HasManyMethods |  |  | yes |  |
+
 ## Acknowledgements
 * Built with [nikic/php-parser](https://github.com/nikic/php-parser)
 * PSR Printing fixes borrowed from [tcopestake/PHP-Parser-PSR-2-pretty-printer](https://github.com/tcopestake/PHP-Parser-PSR-2-pretty-printer)

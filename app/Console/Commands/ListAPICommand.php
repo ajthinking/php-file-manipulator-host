@@ -7,6 +7,8 @@ use Ajthinking\PHPFileManipulator\PHPFile;
 
 class ListAPICommand extends Command
 {
+    const PATH_TO_RESOURCES = 'packages/Ajthinking/PHPFileManipulator/src/Resources/ClassNameResource.php';
+
     /**
      * The name and signature of the console command.
      *
@@ -43,8 +45,7 @@ class ListAPICommand extends Command
         //         return $file->classMethodNames();
         //     });
 
-
-        $file = PHPFile::load('packages/Ajthinking/PHPFileManipulator/src/Resources/ClassNameResource.php');
+        $file = PHPFile::load(static::PATH_TO_RESOURCES);
 
         $this->info(
             $file->className() . " --> " . 
