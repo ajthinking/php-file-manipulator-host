@@ -13,7 +13,7 @@ trait HasQueryBuilder
 
     public static function in($args)
     {
-        // 
+        return (new QueryBuilder())->in($args);
     }
 
     public static function where($args)
