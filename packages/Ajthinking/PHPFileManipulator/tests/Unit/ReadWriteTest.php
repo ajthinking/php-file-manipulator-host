@@ -4,20 +4,34 @@ namespace Ajthinking\PHPFileManipulator\Tests\Unit;
 
 use Ajthinking\PHPFileManipulator\Tests\TestCase;
 use Ajthinking\PHPFileManipulator\PHPFile;
+use Ajthinking\PHPFileManipulator\LaravelFile;
 
 class PHPFileTest extends TestCase
 {
     /** @test */
-    public function it_can_read_from_disc()
+    public function it_can_load_php_files()
     {
         $file = PHPFile::load(
-            $this->samplePath('app/User.php')
+            $this->samplePath('index.php')
         );
 
         $this->assertTrue(
             get_class($file) === 'Ajthinking\PHPFileManipulator\PHPFile'
         );
     }
+
+    /** @test */
+    public function it_can_also_load_laravel_specific_files()
+    {
+        $file = LaravelFile::load(
+            $this->samplePath('app/User.php')
+        );
+
+        $this->assertInstanceOf(
+            LaravelFile::class, $file
+        );
+    }
+
 
     /** @test */
     public function it_has_path_getters()
