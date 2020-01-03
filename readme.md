@@ -1,6 +1,5 @@
 # PHP-FILE-MANIPULATOR
 Programatically manipulate PHP / Laravel files on disk.
-> Danger zone! Work in progress
 
 ## Installation
 ```
@@ -66,6 +65,12 @@ LaravelFile::load('app/User.php')
 vendor/phpunit/phpunit/phpunit packages/Ajthinking/PHPFileManipulator/tests
 ```
 
+## License
+MIT
+
+## Contributing
+PRs and issues are welcome. 
+
 ## TODO
 
 
@@ -80,6 +85,7 @@ vendor/phpunit/phpunit/phpunit packages/Ajthinking/PHPFileManipulator/tests
 | `GroupUse`, example:  `use Package\{Alfa, Beta};` | - |
 | how handle base_path() when not in a Laravel app? | - |
 | fix addHasManyMethod to accept array instead of string | - |
+| simplify adding multiline docblocks | - |
 
 ## API status
 
@@ -96,3 +102,13 @@ vendor/phpunit/phpunit/phpunit packages/Ajthinking/PHPFileManipulator/tests
 | traits         |  - | -   | -   | -      |
 | properties     |  - | -   | -   | -      |
 | methods        |  - | -   | -   | -      |
+
+
+## Acknowledgements
+* Built almost entirely with [nikic/php-parser](https://github.com/nikic/php-parser)
+* PSR Printing fixes borrowed from [tcopestake/PHP-Parser-PSR-2-pretty-printer](https://github.com/tcopestake/PHP-Parser-PSR-2-pretty-printer)
+
+## Stay tuned!
+Follow me on twitter: [@ajthinking](https://twitter.com/ajthinking)
+
+<a href="https://www.patreon.com/ajthinking" >Help me continue this work | Patreon</a>
