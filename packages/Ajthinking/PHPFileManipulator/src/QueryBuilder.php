@@ -17,14 +17,14 @@ class QueryBuilder
         $this->PHPSignature = '/\.php$/';
     }
 
-    public function all($path, $signature)
+    public function all()
     {
         $PHPSignature = '/\.php$/';
         $JSONSignature = '/\.json$/';
 
         $this->recursiveFileSearch(
-            $path,
-            $signature
+            base_path(),
+            $PHPSignature
         );
     }
 
