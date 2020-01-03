@@ -26,15 +26,5 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password', 'remember_token',
-    ];
-
-    public function cars()
-    {
-        return $this->hasMany(\App\Car::class);
-    }
-
-    public function comments()
-    {
-        return $this->hasMany('App\Comment');
-    }    
+    ];    
 }
