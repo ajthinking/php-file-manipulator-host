@@ -96,10 +96,10 @@ PRs and issues are welcome.
 |------|--------|--------|--------|--------|
 | Namespace | yes | yes | | |
 | Uses | yes | yes | | |
-| ClassName | yes | yes | | |
+| ClassName | ```$file->className()``` | ```$file->className('newName)``` | | |
 | ClassExtends | yes | yes | yes | yes |
 | ClassImplements | yes | yes | yes | yes |
-| HasManyMethods |  |  | yes |  |
+| HasManyMethods |  |  | ```$file->addHasManyMethods(['App\Car'])``` |  |
 
 ## Acknowledgements
 * Built with [nikic/php-parser](https://github.com/nikic/php-parser)
