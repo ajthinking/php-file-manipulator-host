@@ -79,12 +79,16 @@ PRs and issues are welcome.
 | task | status |
 |------|--------|
 | Make the test work without being inside a host application| - |
-| how handle base_path() when not in a Laravel app? | - |
+| How handle base_path() when not in a Laravel app? | - |
 | Create a dedicated Storage disk (storage/php-file-manipulator/preview etc) ??? | - |
-| it_can_add_use_statements_with_alias | - |
-| Capable of reading/writing `GroupUse`, example:  `use Package\{Alfa, Beta};` | - |
-| simplify adding multiline docblocks | - |
-| group related resources (PHP/Laravel Reources in separate folders) | - |
+| It should be able to add use statements with aliases | - |
+| It should be capable of reading/writing `GroupUse`, example:  `use Package\{Alfa, Beta};` | - |
+| Simplify adding multiline docblocks on methods | - |
+| Group related resources (PHP/Laravel Reources in separate folders) | - |
+| Can it resolve resources from parent classes and traits??? | - |
+| Add the missing relationships: https://laravel.com/docs/6.x/eloquent-relationships#introduction | - |
+| Make a minimal querybuilder | - |
+| Publish to packagist | - |
 
 ## Acknowledgements
 * Built with [nikic/php-parser](https://github.com/nikic/php-parser)
