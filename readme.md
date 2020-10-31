@@ -1,5 +1,5 @@
 # PHP-FILE-MANIPULATOR
-Programatically manipulate PHP / Laravel files on disk with an intuiutive, fluent API.
+Programatically manipulate PHP / Laravel files on disk with a cool intuiutive, fluent API.
 
 ## Installation
 ```
